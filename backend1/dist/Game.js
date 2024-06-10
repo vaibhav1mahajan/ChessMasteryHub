@@ -30,6 +30,7 @@ class Game {
             this.board.move(move);
         }
         catch (error) {
+            console.log(error);
             return;
         }
         if (this.board.isGameOver()) {
@@ -46,6 +47,7 @@ class Game {
                 }
             }));
         }
+        console.log(move);
         if (this.movesCount % 2 == 0) {
             this.player2.send(JSON.stringify({
                 type: "move",
