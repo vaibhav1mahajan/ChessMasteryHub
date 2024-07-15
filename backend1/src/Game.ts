@@ -29,11 +29,19 @@ export class Game{
                 color: 'black'
             }
         }))
+        this.player1.send(JSON.stringify({
+            type:'turn',
+            payload:'w'
+        }))
+        this.player2.send(JSON.stringify({
+            type:'turn',
+            payload:'w'
+        }))
     }
 
     makeMove(socket : WebSocket,move : Move){
-        if(this.movesCount%2==0 && socket!=this.player1) return;
-        if(this.movesCount%2==1 && socket!=this.player2) return;
+        if(this.board.turn() === 'w' && socket!=this.player1) return;
+        if(this.board.turn() === 'b' && socket!=this.player2) return;
         
         try {
             this.board.move(move);
@@ -55,9 +63,17 @@ export class Game{
                     winner : this.board.turn() == 'w' ? 'black' : 'white' 
                 }
             }))
+          this.player1.send(JSON.stringify({
+            type:'turn',
+            payload:'',
+          }));
+          this.player2.send(JSON.stringify({
+            type:'turn',
+            payload:'',
+          }));
         }
         console.log(move);
-        if(this.movesCount%2==0){
+        if(this.board.turn() === 'b'){
             this.player2.send(JSON.stringify({
                 type: "move",
                 payload : move
@@ -68,6 +84,16 @@ export class Game{
                 payload : move
             }))
         }
+        console.log(this.board.turn(), 'inside game.ts');
+        this.player1.send(JSON.stringify({
+            type:'turn',
+            payload:this.board.turn()
+        }))
+        this.player2.send(JSON.stringify({
+            type:'turn',
+            payload:this.board.turn()
+        }))
+
         this.movesCount++;
     }
 
