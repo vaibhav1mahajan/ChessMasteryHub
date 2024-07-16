@@ -93,8 +93,8 @@ export default function ChessBoard({moves, setMoves, board, socket, setBoard, ch
               }
             }}
               key={j} className={`w-24 h-24 flex justify-center border items-center ${(i + j) % 2 !== 0 ? 'bg-green-600' : 'bg-white'} relative`}>
-                <div className="absolute bottom-1 right-1">{(colour==='black' || colour==='b' ) && i==8 ? String.fromCharCode(97+j) : (colour ==='white' || colour==='w') && i==1 ?String.fromCharCode(97+j) : "" }</div>
-                <div className="absolute top-1 left-1">{(colour==='black' || colour==='b' ) && j==7 ? i : (colour ==='white' || colour==='w') && j==0 ? i : "" }</div>
+                <div className="absolute bottom-1 right-1 select-none">{(colour==='black' || colour==='b' ) && i==8 ? String.fromCharCode(97+j) : (colour ==='white' || colour==='w') && i==1 ?String.fromCharCode(97+j) : "" }</div>
+                <div className="absolute top-1 left-1 select-none">{(colour==='black' || colour==='b' ) && j==7 ? i : (colour ==='white' || colour==='w') && j==0 ? i : "" }</div>
               {square ? <img className="select-none" height={48} width={48} src={`/Chess_pieces/${ square.color === 'w' ? 'W' : 'B' }${square.type.toUpperCase()}.png`} /> : ""}
               
             </div>
