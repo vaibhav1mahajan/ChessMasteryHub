@@ -29,7 +29,7 @@ export default function Landing() {
             A place where you can play chess and improve your chess skills
           </div>
           <div className="flex justify-center">
-            <Button onClick={()=>{
+            <Button buttonDisable={false} onClick={()=>{
               
                 navigation('/game');
             }} >Play Online</Button>

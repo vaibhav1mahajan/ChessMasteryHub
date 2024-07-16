@@ -13,14 +13,9 @@ interface Move {
 
 }
 
-interface MovesTableProps {
-
-  moves: Move[] | [];
-
-}
 
 export default function Game() {
-  const [chess, setChess] = useState(new Chess());
+  const [chess, ] = useState(new Chess());
   const [board, setBoard] = useState(chess.board());
   const [buttonDisable,setButtonDisable] = useState(false);
   const [turn,setTurn] = useState('w');

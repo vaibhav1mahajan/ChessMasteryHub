@@ -29,7 +29,7 @@ export default function ChessBoard({moves, setMoves, board, socket, setBoard, ch
   socket: WebSocket;
 }) {
   const [from, setFrom] = useState<string | null>(null);
-  const [to, setTo] = useState<string | null>(null);
+  const [, setTo] = useState<string | null>(null);
   return (
     <div>
       {(colour==='b' || colour==='black' ? board.slice().reverse() : board).map((row, i) => {
