@@ -15,7 +15,7 @@ const MovesTable = ({moves} : {moves:Move[]} ) => {
         </div>
         {moves.map((move,index)=>{
             return(
-                <div key={index} className='grid grid-cols-2 border-[0.5px] border-white  py-2  gap-3'>
+                <div key={index} className={`${index%2==0 ? 'bg-slate-700' : 'bg-slate-800'} grid grid-cols-2 border-[0.5px] border-white  py-2  gap-3`}>
                 <div className='text-xl text-center'>{move.from}</div>
                 <div className='text-xl text-center'>{move.to}</div>
                 </div>

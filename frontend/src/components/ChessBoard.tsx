@@ -30,12 +30,15 @@ export default function ChessBoard({moves, setMoves, board, socket, setBoard, ch
 }) {
   const [from, setFrom] = useState<string | null>(null);
   const [to, setTo] = useState<string | null>(null);
-
   return (
     <div>
-      {board.map((row, i) => (
+      {(colour==='b' || colour==='black' ? board.slice().reverse() : board).map((row, i) => {
+        i = colour==='b' || colour==='black' ? i+1 : 8-i;
+        return (
         <div key={i} style={{ display: 'flex' }}>
-          {row.map((square, j) => (
+          {(colour==='b' || colour==='black'?row.slice().reverse():row).map((square, j) => {
+            j = colour==='b' || colour==='black' ? 7 -  (j % 8) :   (j % 8);
+            return(
             <div onClick={() => {
               if(colour.charAt(0)!=turn.charAt(0)) {
                 console.log(colour,turn);
@@ -45,11 +48,12 @@ export default function ChessBoard({moves, setMoves, board, socket, setBoard, ch
               if (!from) {
                 console.log(colour,turn);
 
-                const newFrom = `${String.fromCharCode(j + 97)}${8 - i}`;
+                let newFrom = `${String.fromCharCode(j + 97)}${i}`;
+                
                 setFrom(newFrom);
                 console.log(newFrom); // Log the new 'from' value
               } else {
-                const newTo = `${String.fromCharCode(j + 97)}${8 - i}`;
+                let newTo = `${String.fromCharCode(j + 97)}${i}`;
                 setTo(newTo);
                 console.log(i, j); // Log i and j
                 console.log(newTo, from); // Log the new 'to' value and the current 'from' value
@@ -66,29 +70,44 @@ export default function ChessBoard({moves, setMoves, board, socket, setBoard, ch
                 }));
 
                 // Make the move on the chess instance
-                const move = chess.move({ from, to: newTo });
-                const m : Move = {
-                  from , to : newTo
+                try {
+                  const move = chess.move({ from, to: newTo });
+                  const m : Move = {
+                    from , to : newTo
+                  }
+                  // Check if the move is valid
+                  if (move) {
+                    setBoard(chess.board());
+                    setMoves([...moves, m]);
+                  }
+  
+                  // Clear 'from' and 'to' after sending the message if necessary
+                  setFrom(null);
+                  setTo(null);
+                } catch (error) {
+                  console.log("invalid move , try another move" )
+                  setFrom(null);
+                  setTo(null);
                 }
-                // Check if the move is valid
-                if (move) {
-                  setBoard(chess.board());
-                  setMoves([...moves, m]);
-                }
-
-                // Clear 'from' and 'to' after sending the message if necessary
-                setFrom(null);
-                setTo(null);
+                
               }
             }}
               key={j} className={`w-24 h-24 flex justify-center border items-center ${(i + j) % 2 !== 0 ? 'bg-green-600' : 'bg-white'}`}>
-              {square ? <img className="select-none" height={48} width={48} src={`/Chess_pieces/${square.color === 'w' ? 'W' : 'B'}${square.type.toUpperCase()}.png`} /> : ""}
+              {square ? <img className="select-none" height={48} width={48} src={`/Chess_pieces/${ square.color === 'w' ? 'W' : 'B' }${square.type.toUpperCase()}.png`} /> : ""}
+              
             </div>
-          ))}
+          )
+      }
+          )}
+          
         </div>
-      ))}
+      )
+})}
+      
     </div>
   );
 }
 
 
+
+// (colour == 'b' || colour === 'black') && square.color==='w' ? 'B' : (colour == 'b' || colour === 'black') && square.color === 'b' ? 'W' : square.color === 'w' ? 'W' : 'B' 
