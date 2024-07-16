@@ -1,10 +1,10 @@
 
 
-export default function Button({onClick , children}:{onClick: ()=> void , children: React.ReactNode}) {
+export default function Button({onClick , children , buttonDisable}:{onClick: ()=> void , children: React.ReactNode , buttonDisable:boolean}) {
    
   return (
     <div className="mt-5">
-        <button onClick={onClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button disabled={buttonDisable} aria-disabled={buttonDisable} onClick={onClick} className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${buttonDisable ? 'cursor-not-allowed' : ''}`}>
   {children}
 </button>
     </div>

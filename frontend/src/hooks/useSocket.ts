@@ -9,7 +9,7 @@ export const useSocket = ()=>{
         }
 
         ws.onclose = ()=>{
-            setSocket(ws);
+            setSocket(null);
         }
 
     },[])

@@ -54,6 +54,27 @@ class Game {
                     winner: this.board.turn() == 'w' ? 'black' : 'white'
                 }
             }));
+            if (this.board.turn() === 'b') {
+                this.player2.send(JSON.stringify({
+                    type: "move",
+                    payload: move
+                }));
+            }
+            else {
+                this.player1.send(JSON.stringify({
+                    type: "move",
+                    payload: move
+                }));
+            }
+            this.player1.send(JSON.stringify({
+                type: 'turn',
+                payload: '',
+            }));
+            this.player2.send(JSON.stringify({
+                type: 'turn',
+                payload: '',
+            }));
+            return;
         }
         console.log(move);
         if (this.board.turn() === 'b') {
