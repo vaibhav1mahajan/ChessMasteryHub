@@ -1,6 +1,6 @@
 
 
-export default function Button({onClick , children , buttonDisable}:{onClick: ()=> void , children: React.ReactNode , buttonDisable:boolean}) {
+export default function Button({onClick , children , buttonDisable}:{onClick: ()=> void , children: any , buttonDisable:boolean}) {
    
   return (
     <div className="mt-5">

@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.cl-socialButtonsBlockButtonText__google {
+    filter: invert(1);
+}
+
+.cl-socialButtonsBlockButtonText__github {
+    filter: invert(1);
+}
+
+.cl-providerIcon__github{
+    filter: invert(1);
+}

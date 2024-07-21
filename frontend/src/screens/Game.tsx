@@ -6,6 +6,8 @@ import { Chess } from "chess.js";
 import { useSocket } from "../hooks/useSocket";
 import { useEffect, useState } from "react";
 import MovesTable from "../components/MovesTable";
+import { SignedIn, SignedOut, SignIn } from "@clerk/clerk-react";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 interface Move {
   from:string,
@@ -23,6 +25,7 @@ export default function Game() {
   const [gameOver,setGameOver] = useState({gameOver:false,winner:''});
   const [moves,setMoves] = useState<Move[]>([]);
   const socket = useSocket();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!socket) return;
@@ -56,28 +59,45 @@ export default function Game() {
     };
   }, [socket, chess]);
 
-  if (!socket) return <div>Connecting...</div>;
+  if (!socket){
+    return(
+      <div className="flex justify-center items-center h-screen">
+        <h1 className="text-white text-3xl font-bold">Connecting to server ...</h1>
+      </div>
+    )
+  };
 
   return (
-    <>
+    <div>
+
+    <SignedIn>
       <div className="grid grid-cols-1 md:grid-cols-2 h-screen w-full">
         <div className="flex justify-center items-center" >
           <ChessBoard moves={moves} setMoves={setMoves} colour={colour} turn={turn} chess={chess} setBoard={setBoard} board={board} socket={socket} />
         </div>
-        <div className="flex justify-center items-center">
-         {!buttonDisable && <Button buttonDisable={buttonDisable} onClick={() => {
+        <div className={`flex justify-center ${buttonDisable ? '' : 'items-center'}`}>
+         {<Button buttonDisable={buttonDisable} onClick={() => {
             socket.send(JSON.stringify({
               type: 'init_game'
             }));  
             setButtonDisable(true);
           }}>
-            Play
+            {!buttonDisable ?  "Play" : "Finding other person"}
           </Button>}
           
           {buttonDisable && <MovesTable moves={moves as Move[]} />}
         </div>
         {gameOver.gameOver && <div>Game Over! Winner is {gameOver.winner}</div>}
       </div>
-    </>
+    </SignedIn>
+    <SignedOut>
+      <div className="flex justify-center items-center h-screen">
+
+          <SignIn  forceRedirectUrl='/game'/>
+
+          </div>
+    </SignedOut>
+    </div>
+
   );
 }
