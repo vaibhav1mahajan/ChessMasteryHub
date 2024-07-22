@@ -46,7 +46,7 @@ export class Game{
         try {
             this.board.move(move);
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             return ;
         }
 
@@ -84,7 +84,7 @@ export class Game{
           }));
           return ;
         }
-        console.log(move);
+        // console.log(move);
         if(this.board.turn() === 'b'){
             this.player2.send(JSON.stringify({
                 type: "move",
@@ -96,7 +96,7 @@ export class Game{
                 payload : move
             }))
         }
-        console.log(this.board.turn(), 'inside game.ts');
+        // console.log(this.board.turn(), 'inside game.ts');
         this.player1.send(JSON.stringify({
             type:'turn',
             payload:this.board.turn()

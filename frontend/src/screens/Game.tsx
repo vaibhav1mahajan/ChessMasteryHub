@@ -24,40 +24,65 @@ export default function Game() {
   const [colour,setColour] = useState('');
   const [gameOver,setGameOver] = useState({gameOver:false,winner:''});
   const [moves,setMoves] = useState<Move[]>([]);
+  const [refresh,setRefresh] = useState(false);
+  const [isGameStarted,setIsGameStarted] = useState(false);
   const socket = useSocket();
   const navigate = useNavigate();
 
+
+  useEffect(()=>{
+    window.onbeforeunload = ()=>{
+      setRefresh(true);
+    }
+    window.addEventListener("beforeunload",()=>{
+      setRefresh(true);
+    })
+    return ()=>{
+      window.removeEventListener("beforeunload",()=>{
+        setRefresh(true);
+      })
+    }
+  },[])
+
   useEffect(() => {
     if (!socket) return;
+
+    if(refresh){
+      // console.log("inside refresh")
+      socket.send(JSON.stringify({
+        type:'removeFromIsPending'
+      }))
+    }
 
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
       
       if (message.type === 'init_game') {
-        console.log("game started");
+        // console.log("game started");
+        setIsGameStarted(true);
         setColour(message.payload.color);
         setBoard(chess.board());
       }
        if(message.type === 'turn') {
-        console.log("turn" , message.payload);
+        // console.log("turn" , message.payload);
           setTurn(message.payload);
       }
        if (message.type === 'move') {
-        console.log("moved");
+        // console.log("moved");
         const move = message.payload;
         chess.move(move);
         setBoard(chess.board());
         setMoves((moves)=>[...moves,move]);
       } 
       if(message.type=='waiting'){
-        console.log("Waiting for another player");
+        // console.log("Waiting for another player");
       } 
       if(message.type=='Game_Over'){
-        console.log("Game over");
+        // console.log("Game over");
         setGameOver({gameOver:true,winner:message.payload.winner});
       }
     };
-  }, [socket, chess]);
+  }, [socket, chess,refresh]);
 
   if (!socket){
     return(
@@ -75,19 +100,19 @@ export default function Game() {
         <div className="flex justify-center items-center" >
           <ChessBoard moves={moves} setMoves={setMoves} colour={colour} turn={turn} chess={chess} setBoard={setBoard} board={board} socket={socket} />
         </div>
-        <div className={`flex justify-center ${buttonDisable ? '' : 'items-center'}`}>
-         {<Button buttonDisable={buttonDisable} onClick={() => {
+        <div className={`flex justify-center ${isGameStarted ? '':'items-center'}`}>
+         {(!buttonDisable && !isGameStarted )? <Button buttonDisable={buttonDisable} onClick={() => {
             socket.send(JSON.stringify({
               type: 'init_game'
             }));  
             setButtonDisable(true);
           }}>
-            {!buttonDisable ?  "Play" : "Finding other person"}
-          </Button>}
+            Play
+          </Button> : !isGameStarted && <h1 className="text-2xl font-semibold">Finding another player...</h1>}
           
-          {buttonDisable && <MovesTable moves={moves as Move[]} />}
+          {isGameStarted && <MovesTable moves={moves as Move[]} />}
         </div>
-        {gameOver.gameOver && <div>Game Over! Winner is {gameOver.winner}</div>}
+        {gameOver.gameOver && <div className="absolute top-[50%] left-[50%] z-10 text-2xl text-white">Game Over! Winner is {gameOver.winner}</div>}
       </div>
     </SignedIn>
     <SignedOut>
