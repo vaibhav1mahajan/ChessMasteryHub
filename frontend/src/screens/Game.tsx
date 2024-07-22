@@ -7,7 +7,6 @@ import { useSocket } from "../hooks/useSocket";
 import { useEffect, useState } from "react";
 import MovesTable from "../components/MovesTable";
 import { SignedIn, SignedOut, SignIn } from "@clerk/clerk-react";
-import { useNavigate, useNavigation } from "react-router-dom";
 
 interface Move {
   from:string,
@@ -27,8 +26,6 @@ export default function Game() {
   const [refresh,setRefresh] = useState(false);
   const [isGameStarted,setIsGameStarted] = useState(false);
   const socket = useSocket();
-  const navigate = useNavigate();
-
 
   useEffect(()=>{
     window.onbeforeunload = ()=>{

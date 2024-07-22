@@ -3,7 +3,7 @@
 // import { useNavigate } from "react-router-dom";
 // import Button from "../components/Button";
 
-import { SignedIn, SignedOut, SignIn, SignInButton, SignUpButton } from "@clerk/clerk-react"
+
 import { useNavigate } from "react-router-dom"
 
 // export default function Landing() {
