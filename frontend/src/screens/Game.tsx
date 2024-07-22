@@ -6,7 +6,6 @@ import { Chess } from "chess.js";
 import { useSocket } from "../hooks/useSocket";
 import { useEffect, useState } from "react";
 import MovesTable from "../components/MovesTable";
-import { SignedIn, SignedOut, SignIn } from "@clerk/clerk-react";
 
 interface Move {
   from:string,
@@ -91,8 +90,6 @@ export default function Game() {
 
   return (
     <div>
-
-    <SignedIn>
       <div className="grid grid-cols-1 md:grid-cols-2 h-screen w-full">
         <div className="flex justify-center items-center" >
           <ChessBoard moves={moves} setMoves={setMoves} colour={colour} turn={turn} chess={chess} setBoard={setBoard} board={board} socket={socket} />
@@ -111,14 +108,6 @@ export default function Game() {
         </div>
         {gameOver.gameOver && <div className="absolute top-[50%] left-[50%] z-10 text-2xl text-white">Game Over! Winner is {gameOver.winner}</div>}
       </div>
-    </SignedIn>
-    <SignedOut>
-      <div className="flex justify-center items-center h-screen">
-
-          <SignIn  forceRedirectUrl='/'/>
-
-          </div>
-    </SignedOut>
     </div>
 
   );
