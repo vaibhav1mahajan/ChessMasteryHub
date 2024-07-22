@@ -115,7 +115,7 @@ export default function Game() {
     <SignedOut>
       <div className="flex justify-center items-center h-screen">
 
-          <SignIn  forceRedirectUrl='/game'/>
+          <SignIn  forceRedirectUrl='/'/>
 
           </div>
     </SignedOut>
