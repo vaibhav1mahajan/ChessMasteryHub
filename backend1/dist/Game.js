@@ -38,7 +38,7 @@ class Game {
             this.board.move(move);
         }
         catch (error) {
-            // console.log(error);
+            // console.log(error)
             return;
         }
         if (this.board.isGameOver()) {
