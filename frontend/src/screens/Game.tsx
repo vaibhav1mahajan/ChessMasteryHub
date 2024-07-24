@@ -90,8 +90,8 @@ export default function Game() {
 
   return (
     <div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 h-screen w-full">
-        <div className="mt-6 flex justify-center items-center md:max-h-screen" >
+      <div className="grid grid-cols-1 lg:grid-cols-2 h-screen w-full m-8">
+        <div className="m-6 p-8 flex justify-center items-center md:max-h-screen" >
           <ChessBoard moves={moves} setMoves={setMoves} colour={colour} turn={turn} chess={chess} setBoard={setBoard} board={board} socket={socket} />
         </div>
         <div className={`flex justify-center ${isGameStarted ? '':'items-center'}`}>
