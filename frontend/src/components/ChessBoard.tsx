@@ -51,12 +51,12 @@ export default function ChessBoard({moves, setMoves, board, socket, setBoard, ch
                 let newFrom = `${String.fromCharCode(j + 97)}${i}`;
                 
                 setFrom(newFrom);
-                // console.log(newFrom); // Log the new 'from' value
+                console.log(newFrom); // Log the new 'from' value
               } else {
                 let newTo = `${String.fromCharCode(j + 97)}${i}`;
                 setTo(newTo);
-                // console.log(i, j); // Log i and j
-                // console.log(newTo, from); // Log the new 'to' value and the current 'from' value
+                console.log(i, j); // Log i and j
+                console.log(newTo, from); // Log the new 'to' value and the current 'from' value
 
                 // Use the new 'to' value and current 'from' value to send the WebSocket message
                 socket.send(JSON.stringify({
@@ -92,10 +92,10 @@ export default function ChessBoard({moves, setMoves, board, socket, setBoard, ch
                 
               }
             }}
-              key={j} className={`w-24 h-24 flex justify-center border items-center ${(i + j) % 2 !== 0 ? 'bg-slate-600' : 'bg-slate-300'} relative`}>
-                <div className="absolute bottom-1 right-1 text-black select-none">{(colour==='black' || colour==='b' ) && i==8 ? String.fromCharCode(97+j) : (colour ==='white' || colour==='w') && i==1 ?String.fromCharCode(97+j) : "" }</div>
-                <div className="absolute top-1 left-1 select-none text-black">{(colour==='black' || colour==='b' ) && j==7 ? i : (colour ==='white' || colour==='w') && j==0 ? i : "" }</div>
-              {square ? <img className="select-none" height={48} width={48} src={`/Chess_pieces/${ square.color === 'w' ? 'W' : 'B' }${square.type.toUpperCase()}.png`} /> : ""}
+              key={j} className={`w-10 h-10 md:h-24 md:w-24 flex justify-center border items-center ${(i + j) % 2 !== 0 ? 'bg-slate-600' : 'bg-slate-300'} relative`}>
+                <div className="absolute bottom-1 right-1 text-black select-none max-sm:text-sm">{(colour==='black' || colour==='b' ) && i==8 ? String.fromCharCode(97+j) : (colour ==='white' || colour==='w') && i==1 ?String.fromCharCode(97+j) : "" }</div>
+                <div className="absolute top-1 left-1 select-none text-black max-sm:text-sm">{(colour==='black' || colour==='b' ) && j==7 ? i : (colour ==='white' || colour==='w') && j==0 ? i : "" }</div>
+              {square ? <img className="select-none h-6 w-6 md:h-14 md:w-14"  src={`/Chess_pieces/${ square.color === 'w' ? 'W' : 'B' }${square.type.toUpperCase()}.png`} /> : ""}
               
             </div>
           )

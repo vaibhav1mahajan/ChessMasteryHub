@@ -91,7 +91,7 @@ export default function Game() {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 h-screen w-full">
-        <div className="flex justify-center items-center" >
+        <div className="mt-6 flex justify-center items-center md:max-h-screen" >
           <ChessBoard moves={moves} setMoves={setMoves} colour={colour} turn={turn} chess={chess} setBoard={setBoard} board={board} socket={socket} />
         </div>
         <div className={`flex justify-center ${isGameStarted ? '':'items-center'}`}>
@@ -103,8 +103,10 @@ export default function Game() {
           }}>
             Play
           </Button> : !isGameStarted && <h1 className="text-2xl font-semibold">Finding another player...</h1>}
-          
-          {isGameStarted && <MovesTable moves={moves as Move[]} />}
+          <div className="">
+
+          {isGameStarted && <MovesTable  moves={moves as Move[]} />}
+          </div>
         </div>
         {gameOver.gameOver && <div className="absolute top-[50%] left-[50%] z-10 text-2xl text-white">Game Over! Winner is {gameOver.winner}</div>}
       </div>
