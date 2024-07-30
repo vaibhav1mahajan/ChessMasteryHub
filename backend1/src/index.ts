@@ -3,7 +3,7 @@ import { GameManager } from './GameManager';
 
 const gameManager = new GameManager();
 
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ host: '0.0.0.0', port: 8080 });
 wss.on('connection', function connection(ws) {
       gameManager.addUser(ws)
 

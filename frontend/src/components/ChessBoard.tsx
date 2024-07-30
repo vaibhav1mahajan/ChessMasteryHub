@@ -3,6 +3,8 @@
 
 import { Square, Color, PieceSymbol, Chess } from "chess.js";
 import { useState } from "react";
+import moveSound from '../assets/sounds/move.mp3';
+import errorSound from '../assets/sounds/error.mp3';
 
 interface Move {
   from: string;
@@ -79,6 +81,11 @@ export default function ChessBoard({moves, setMoves, board, socket, setBoard, ch
                   if (move) {
                     setBoard(chess.board());
                     setMoves([...moves, m]);
+                    const audio = new Audio(moveSound);
+                    audio.play();
+                  } else{
+                    const audio = new Audio(errorSound);
+                    audio.play();
                   }
   
                   // Clear 'from' and 'to' after sending the message if necessary
@@ -86,6 +93,8 @@ export default function ChessBoard({moves, setMoves, board, socket, setBoard, ch
                   setTo(null);
                 } catch (error) {
                   // console.log("invalid move , try another move" )
+                  const audio = new Audio(errorSound);
+                    audio.play();
                   setFrom(null);
                   setTo(null);
                 }

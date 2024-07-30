@@ -6,6 +6,7 @@ import { Chess } from "chess.js";
 import { useSocket } from "../hooks/useSocket";
 import { useEffect, useState } from "react";
 import MovesTable from "../components/MovesTable";
+import moveSound from '../assets/sounds/move.mp3';
 
 interface Move {
   from:string,
@@ -69,6 +70,8 @@ export default function Game() {
         chess.move(move);
         setBoard(chess.board());
         setMoves((moves)=>[...moves,move]);
+        const audio = new Audio(moveSound);
+                    audio.play();
       } 
       if(message.type=='waiting'){
         // console.log("Waiting for another player");
@@ -90,11 +93,11 @@ export default function Game() {
 
   return (
     <div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 h-screen w-full m-8">
-        <div className="m-6 p-8 flex justify-center items-center md:max-h-screen" >
+      <div className="grid grid-cols-1 lg:grid-cols-2 h-screen w-full">
+        <div className="m-3 lg:m-6 px-4 lg:p-6 flex justify-center items-center md:max-h-screen" >
           <ChessBoard moves={moves} setMoves={setMoves} colour={colour} turn={turn} chess={chess} setBoard={setBoard} board={board} socket={socket} />
         </div>
-        <div className={`flex justify-center ${isGameStarted ? '':'items-center'}`}>
+        <div className={`flex justify-center ${isGameStarted ? '':'items-center'} max-sm:items-start`}>
          {(!buttonDisable && !isGameStarted )? <Button buttonDisable={buttonDisable} onClick={() => {
             socket.send(JSON.stringify({
               type: 'init_game'
@@ -105,7 +108,9 @@ export default function Game() {
           </Button> : !isGameStarted && <h1 className="text-2xl font-semibold">Finding another player...</h1>}
           <div className="">
 
-          {isGameStarted && <MovesTable  moves={moves as Move[]} />}
+          <div className="overflow-auto h-screen mt-4">
+            {isGameStarted && <MovesTable moves={moves} />}
+          </div>
           </div>
         </div>
         {gameOver.gameOver && <div className="absolute top-[50%] left-[50%] z-10 text-2xl text-white">Game Over! Winner is {gameOver.winner}</div>}
